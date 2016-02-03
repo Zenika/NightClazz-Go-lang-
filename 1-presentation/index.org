@@ -1,0 +1,280 @@
+#+TITLE: Golang
+#+SUBTITLE: Nightclazz
+#+DATE: 2015/10/15
+#+AUTHOR: vdemeester
+#+EMAIL: vincent@sbr.pm
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:comment d:(not "LOGBOOK") date:t
+#+OPTIONS: e:t email:nil f:t inline:t num:nil p:nil pri:nil stat:t
+#+OPTIONS: tags:t tasks:t tex:t timestamp:t toc:nil todo:t |:t
+#+CREATOR: Emacs 24.4.1 (Org mode 8.2.10)
+#+DESCRIPTION:
+#+EXCLUDE_TAGS: noexport
+#+KEYWORDS:
+#+LANGUAGE: fr
+#+SELECT_TAGS: export
+
+#+COMPANY: Zenika
+#+WWW: http://www.zenika.com
+#+GITHUB: http://github.com/zenika
+#+TWITTER: ZenikaIT
+
+#+FAVICON: images/golang.ico
+#+ICON: images/golang-image1.png
+#+HASHTAG: #gdglille-golang #ZenikaIt #ZenikaNord
+
+** /Whoarewe
+
+
+- @vdemeester
+  - I'm a developer, devops, craftsman — /I 💓 & work @Zenika/
+  - I 💓 GNU/Linux, Docker & GNU/Emacs & Free-software !
+  - I 💓 Java, *Go*, Python and much more
+  - And I 💓 unicode, 🚴 & 🚶
+
+- @emilevauge
+  - Developer, devops & trainer @Zenika 💓
+  - Playing with Docker, Mesos, Kubernetes, Consul...
+  - Creator of traefik.io
+
+* Golang 🐹
+  :PROPERTIES:
+  :SLIDE:    segue dark quote
+  :ASIDE:    right bottom
+  :ARTICLE:  flexbox vleft auto-fadein
+  :END:
+#+BEGIN_HTML
+<code style="background: inherit; color: inherit;">｡◕‿◕｡</code>
+#+END_HTML
+
+  Présentation rapide
+
+** En un mot
+
+- simple
+- strongly typed
+- concurrent
+- compilé
+  - compilation statique possible =\o/=
+
+
+- stylistically nice
+  - /« les goûts et les couleurs »/
+- opiniated
+
+** En quelques lignes de code (1/4)
+
+#+BEGIN_SRC go
+  package main
+
+  import "fmt"
+
+  func <b>swap(x, y string)</b> (<b>string, string</b>) {
+          for _, elt := range []string{"a", "b"} {
+                  fmt.Println(elt)
+          }
+          return y, x
+  }
+
+  func main() {
+          <b>a, b := swap("hello", "world")</b>
+          fmt.Println(a, b)
+  }
+#+END_SRC
+
+** En quelques lignes de code (2/4)
+
+#+BEGIN_SRC go
+  type Vertex struct {
+          X int
+          Y int
+  }
+
+  <b>func (v Vertex) PrintCoords()</b> {
+          fmt.Printf("(%s,%s)", v.X, v.Y)
+  }
+
+  func main() {
+          v := Vertex{1, 2}
+          <b>v.PrintCoords()</b>
+          v.X = 4
+          fmt.Println(v.X)
+  }
+#+END_SRC
+
+** En quelques lignes de code (3/4)
+
+#+BEGIN_SRC go
+  func adder() <b>func(int) int</b> {
+          sum := 0
+          <b>return func(x int) int {
+                  sum += x
+                  return sum
+          }</b>
+  }
+
+  func main() {
+          pos, neg := adder(), adder()
+          for i := 0; i < 10; i++ {
+                  fmt.Println(<b>pos(i)</b>, <b>neg(-2*i)</b>)
+          }
+  }
+#+END_SRC
+
+** En quelques lignes de code (4/4)
+
+#+BEGIN_SRC go
+  type Abser interface {
+          <b>Abs() float64</b>
+  }
+
+  type MyFloat float64
+
+  <b>func (f MyFloat) Abs() float64</b> {
+          if f < 0 {
+                  return float64(-f)
+          }
+          return float64(f)
+  }
+
+  <b>var f Abser</b>
+  // […]
+  <b>f.Abs()</b>
+#+END_SRC
+
+** Defer
+   #+BEGIN_SRC go
+  <b>src, _ := os.Open(srcName)</b>
+  <b>defer src.Close()</b>
+  // Doing my stuff […]
+  return "something"
+   #+END_SRC
+
+   =defer= execution order : Last in, First out (=LIFO=)
+
+   #+BEGIN_SRC go
+func b() {
+    for i := 0; i < 4; i++ {
+        <b>defer fmt.Print(i)</b>
+    }
+}
+// Print 4 3 2 1 0
+   #+END_SRC
+** Exports
+
+   Variables, constants, methods, structure ont 2 /états/ :
+- Exportées: *CamelCase*, visible à l'extérieur du package
+- Non-exportées: *camelCase*, invisible à l'extrérieur du package
+
+#+BEGIN_SRC go
+  func <b>myMethod()</b> string {
+          return "On me voit pas... <b>😖</b>"
+  }
+
+  var <b>MyVar</b> = "On me voit <b>😆</b>"
+#+END_SRC
+
+Pas de notion de privé (visible uniquement sur le fichier)
+** Imports
+
+#+BEGIN_SRC go
+  import (
+          // build-in
+          "string"
+          "testing"
+
+          // fully-qualified
+          "github.com/foo/bar"
+          biz "mysuperdomain.io/foo/baz"
+  )
+#+END_SRC
+
+** Compilation
+
+- Compilation time
+- Cross compilation ( >= 1.5 )
+
+#+BEGIN_SRC sh
+env GOOS=linux GOARCH=arm go build -v github.com/constabulary/gb/cmd/gb
+#+END_SRC
+
+- Compilation flags
+
+#+BEGIN_SRC go
+// +build !windows
+#+END_SRC
+
+** Tooling 🛠
+
+- =godoc= : "extracts and generates documentation for Go programs"
+- =vet= : "examines Go source code and reports suspicious constructs"
+- =oracle= : "source analysis tool that answers questions about Go programs"
+- =golint= : "prints out style mistakes, is concerned with coding style"
+- =gofmt= : "reformats Go source code"
+- =generate= : "scanning for special comments in Go source code that identify general commands to run"
+- =gorename= : "performs precise type-safe renaming of identifiers"
+- =-race= & =racy= : "race detector"
+
+
+- et plus encore : =godef=, =gocode=, =impel=, …
+
+** Concurrency
+
+   #+BEGIN_QUOTE
+   A goroutine is a lightweight thread managed by the Go runtime.
+   #+END_QUOTE
+
+   #+BEGIN_SRC go
+  func f(from string) {
+          fmt.Println(from, ":", i)
+  }
+
+  func main() {
+          <b>go f("goroutine")</b>
+          f("direct")
+          <b>go func(msg string)</b> {
+                  fmt.Println(msg)
+          }("going")
+  }
+   #+END_SRC
+
+** Concurrency — channels ␥
+
+   #+BEGIN_QUOTE
+   Channels are a typed conduit through which you can send and receive values with the channel operator, =<-=.
+   #+END_QUOTE
+
+   #+BEGIN_SRC go
+  <b>waitForMe := make(chan bool)</b>
+
+  go func() {
+          fmt.Println("I'm here ! <b>😙</b>")
+          <b>waitForMe <- true</b>
+  }()
+
+  fmt.Println("I'm waiting for you… <b>😒</b>")
+  <b><- waitForMe</b>
+  fmt.Println("Finally <b>🙌</b>")
+   #+END_SRC
+
+** Concurrency - =select= ⌥
+
+#+BEGIN_SRC go
+  done := make(chan error)
+  cmd := os.exec("super-long-command", "that", "might", "timeout")
+  go func() {
+          // And wait for it to exit in the goroutine :)
+          exitErr := cmd.Wait()
+          <b>done <- exitErr</b>
+  }()
+
+  <b>select</b> {
+  <b>case <-time.After(duration):</b>
+          cmd.Process.Kill()
+          break
+  <b>case err = <-done:</b>
+          break
+  }
+#+END_SRC
+
+

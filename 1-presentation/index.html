@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<!-- 2016-02-03 Wed 18:00 -->
+<meta  charset="utf-8" />
+<meta  htto-equiv="X-UA-Compatible" content="chrome=1" />
+<meta  name="generator" content="Org-mode with org-ioslide" />
+<meta  name="author" content="vdemeester" />
+
+
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--This one seems to work all the time, but really small on ipad-->
+<!--<meta name="viewport" content="initial-scale=0.4">-->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="stylesheet" media="all" href="theme/css/default.css" />
+<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css" />
+<link rel="stylesheet" media="all" href="theme/css/small-icon.css" />
+<base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+<script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+
+   <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script>
+
+<script src="js/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML,local/local" type="text/javascript"></script>
+</head>
+<body style="opacity: 0">
+<slides class="layout-widescreen">
+<slide class="title-slide segue nobackground">
+       <aside class="gdbar"><img src="images/golang-image1.png"></aside>
+       <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+       <hgroup class="auto-fadein">
+         <h1 data-config-title><!-- populated from slide_config.json --></h1>
+         <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+         <p data-config-presenter><!-- populated from slide_config.json --></p>
+       </hgroup>
+    </slide>
+  
+</slide>
+<slide id="sec-0-1"  >
+<hgroup class="">
+       <h2 class=" ">/Whoarewe</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-0-1">
+<ul>
+<li>@vdemeester
+<ul>
+<li>I'm a developer, devops, craftsman — <i>I 💓 &amp; work @Zenika</i>
+</li>
+<li>I 💓 GNU/Linux, Docker &amp; GNU/Emacs &amp; Free-software !
+</li>
+<li>I 💓 Java, <b>Go</b>, Python and much more
+</li>
+<li>And I 💓 unicode, 🚴 &amp; 🚶
+</li>
+</ul>
+</li>
+
+<li>@emilevauge
+<ul>
+<li>Developer, devops &amp; trainer @Zenika 💓
+</li>
+<li>Playing with Docker, Mesos, Kubernetes, Consul&#x2026;
+</li>
+<li>Creator of traefik.io
+</li>
+</ul>
+</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-1" class=" segue dark quote nobackground" style="background-image: url(nil)">
+<aside class="gdbar right bottom"><img src="images/golang-image1.png"></aside><hgroup class="">
+       <h2 class=" ">Golang 🐹</h2>
+       <h3></h3>
+       </hgroup>
+<article class="flexbox vleft auto-fadein" id="text-1">
+<code style="background: inherit; color: inherit;">｡◕‿◕｡</code>
+
+<p>
+Présentation rapide
+</p>
+
+
+</article>
+
+</slide>
+<slide id="sec-1-1"  >
+<hgroup class="">
+       <h2 class=" ">En un mot</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-1-1">
+<ul>
+<li>simple
+</li>
+<li>strongly typed
+</li>
+<li>concurrent
+</li>
+<li>compilé
+<ul>
+<li>compilation statique possible <code>\o/</code>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<ul>
+<li>stylistically nice
+<ul>
+<li><i>« les goûts et les couleurs »</i>
+</li>
+</ul>
+</li>
+<li>opiniated
+</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-1-2"  >
+<hgroup class="">
+       <h2 class=" ">En quelques lignes de code (1/4)</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-1-2">
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="go">
+package main
+
+import "fmt"
+
+func <b>swap(x, y string)</b> (<b>string, string</b>) {
+        for _, elt := range []string{"a", "b"} {
+                fmt.Println(elt)
+        }
+        return y, x
+}
+
+func main() {
+        <b>a, b := swap("hello", "world")</b>
+        fmt.Println(a, b)
+}
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-1-3"  >
+<hgroup class="">
+       <h2 class=" ">En quelques lignes de code (2/4)</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-1-3">
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="go">
+type Vertex struct {
+        X int
+        Y int
+}
+
+<b>func (v Vertex) PrintCoords()</b> {
+        fmt.Printf("(%s,%s)", v.X, v.Y)
+}
+
+func main() {
+        v := Vertex{1, 2}
+        <b>v.PrintCoords()</b>
+        v.X = 4
+        fmt.Println(v.X)
+}
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-1-4"  >
+<hgroup class="">
+       <h2 class=" ">En quelques lignes de code (3/4)</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-1-4">
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="go">
+func adder() <b>func(int) int</b> {
+        sum := 0
+        <b>return func(x int) int {
+                sum += x
+                return sum
+        }</b>
+}
+
+func main() {
+        pos, neg := adder(), adder()
+        for i := 0; i &lt; 10; i++ {
+                fmt.Println(<b>pos(i)</b>, <b>neg(-2*i)</b>)
+        }
+}
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-1-5"  >
+<hgroup class="">
+       <h2 class=" ">En quelques lignes de code (4/4)</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-1-5">
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="go">
+type Abser interface {
+        <b>Abs() float64</b>
+}
+
+type MyFloat float64
+
+<b>func (f MyFloat) Abs() float64</b> {
+        if f &lt; 0 {
+                return float64(-f)
+        }
+        return float64(f)
+}
+
+<b>var f Abser</b>
+// […]
+<b>f.Abs()</b>
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-1-6"  >
+<hgroup class="">
+       <h2 class=" ">Defer</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-1-6">
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="go">
+<b>src, _ := os.Open(srcName)</b>
+<b>defer src.Close()</b>
+// Doing my stuff […]
+return "something"
+</pre>
+
+</div>
+
+<p>
+<code>defer</code> execution order : Last in, First out (<code>LIFO</code>)
+</p>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="go">
+func b() {
+    for i := 0; i &lt; 4; i++ {
+        <b>defer fmt.Print(i)</b>
+    }
+}
+// Print 4 3 2 1 0
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+</slide>
+<slide id="sec-1-7"  >
+<hgroup class="">
+       <h2 class=" ">Exports</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-1-7">
+<p>
+Variables, constants, methods, structure ont 2 <i>états</i> :
+</p>
+<ul>
+<li>Exportées: <b>CamelCase</b>, visible à l'extérieur du package
+</li>
+<li>Non-exportées: <b>camelCase</b>, invisible à l'extrérieur du package
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="go">
+func <b>myMethod()</b> string {
+        return "On me voit pas... <b>😖</b>"
+}
+
+var <b>MyVar</b> = "On me voit <b>😆</b>"
+</pre>
+
+</div>
+
+<p>
+Pas de notion de privé (visible uniquement sur le fichier)
+</p>
+
+
+</article>
+
+</slide>
+</slide>
+<slide id="sec-1-8"  >
+<hgroup class="">
+       <h2 class=" ">Imports</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-1-8">
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="go">
+import (
+        // build-in
+        "string"
+        "testing"
+
+        // fully-qualified
+        "github.com/foo/bar"
+        biz "mysuperdomain.io/foo/baz"
+)
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-1-9"  >
+<hgroup class="">
+       <h2 class=" ">Compilation</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-1-9">
+<ul>
+<li>Compilation time
+</li>
+<li>Cross compilation ( &gt;= 1.5 )
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="sh">
+env GOOS=linux GOARCH=arm go build -v github.com/constabulary/gb/cmd/gb
+</pre>
+
+</div>
+
+<ul>
+<li>Compilation flags
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="go">
+// +build !windows
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-1-10"  >
+<hgroup class="">
+       <h2 class=" ">Tooling 🛠</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-1-10">
+<ul>
+<li><code>godoc</code> : "extracts and generates documentation for Go programs"
+</li>
+<li><code>vet</code> : "examines Go source code and reports suspicious constructs"
+</li>
+<li><code>oracle</code> : "source analysis tool that answers questions about Go programs"
+</li>
+<li><code>golint</code> : "prints out style mistakes, is concerned with coding style"
+</li>
+<li><code>gofmt</code> : "reformats Go source code"
+</li>
+<li><code>generate</code> : "scanning for special comments in Go source code that identify general commands to run"
+</li>
+<li><code>gorename</code> : "performs precise type-safe renaming of identifiers"
+</li>
+<li><code>-race</code> &amp; <code>racy</code> : "race detector"
+</li>
+</ul>
+
+
+<ul>
+<li>et plus encore : <code>godef</code>, <code>gocode</code>, <code>impel</code>, …
+</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-1-11"  >
+<hgroup class="">
+       <h2 class=" ">Concurrency</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-1-11">
+<blockquote>
+<p>
+A goroutine is a lightweight thread managed by the Go runtime.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="go">
+func f(from string) {
+        fmt.Println(from, ":", i)
+}
+
+func main() {
+        <b>go f("goroutine")</b>
+        f("direct")
+        <b>go func(msg string)</b> {
+                fmt.Println(msg)
+        }("going")
+}
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-1-12"  >
+<hgroup class="">
+       <h2 class=" ">Concurrency — channels ␥</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-1-12">
+<blockquote>
+<p>
+Channels are a typed conduit through which you can send and receive values with the channel operator, <code>&lt;-</code>.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="go">
+<b>waitForMe := make(chan bool)</b>
+
+go func() {
+        fmt.Println("I'm here ! <b>😙</b>")
+        <b>waitForMe &lt;- true</b>
+}()
+
+fmt.Println("I'm waiting for you… <b>😒</b>")
+<b>&lt;- waitForMe</b>
+fmt.Println("Finally <b>🙌</b>")
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-1-13"  >
+<hgroup class="">
+       <h2 class=" ">Concurrency - <code>select</code> ⌥</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-1-13">
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="go">
+done := make(chan error)
+cmd := os.exec("super-long-command", "that", "might", "timeout")
+go func() {
+        // And wait for it to exit in the goroutine :)
+        exitErr := cmd.Wait()
+        <b>done &lt;- exitErr</b>
+}()
+
+<b>select</b> {
+<b>case &lt;-time.After(duration):</b>
+        cmd.Process.Kill()
+        break
+<b>case err = &lt;-done:</b>
+        break
+}
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide class="backdrop"></slide>
+</slides> 
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body> 
+
+</html>
