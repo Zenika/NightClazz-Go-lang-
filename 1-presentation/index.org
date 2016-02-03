@@ -27,10 +27,10 @@
 
 
 - @vdemeester
-  - I'm a developer, devops, craftsman — /I 💓 & work @Zenika/
-  - I 💓 GNU/Linux, Docker & GNU/Emacs & Free-software !
-  - I 💓 Java, *Go*, Python and much more
-  - And I 💓 unicode, 🚴 & 🚶
+  - Developer, devops, craftsman & trainer @Zenika
+  - 💓 GNU/Linux, Docker & GNU/Emacs & Free-software !
+  - 💓 Java, *Go*, Python, …,  unicode, 🚴 & 🚶
+  - docker & libcompose core maintainer
 
 - @emilevauge
   - Developer, devops & trainer @Zenika 💓

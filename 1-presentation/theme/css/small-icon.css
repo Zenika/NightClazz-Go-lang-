@@ -1,7 +1,7 @@
 slides > slide:not(.nobackground):before {
 background: url(../../images/golang.ico) no-repeat 0 50%;
 font-size: 12pt;
-content: "#gdglille-golang #ZenikaIt #ZenikaNord";
+content: "#zenika #nightclazz #golang";
 position: absolute;
 bottom: 20px;
 left: 60px;
