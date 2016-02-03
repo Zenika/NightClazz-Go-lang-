@@ -21,7 +21,7 @@
 
 #+FAVICON: images/golang.ico
 #+ICON: images/golang-image1.png
-#+HASHTAG: #gdglille-golang #ZenikaIt #ZenikaNord
+#+HASHTAG: #zenika #nightclazz #golang
 
 ** /Whoarewe
 
