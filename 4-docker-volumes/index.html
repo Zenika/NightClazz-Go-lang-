@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<!-- 2016-02-03 Wed 23:58 -->
+<meta  charset="utf-8" />
+<meta  htto-equiv="X-UA-Compatible" content="chrome=1" />
+<meta  name="generator" content="Org-mode with org-ioslide" />
+<meta  name="author" content="vdemeester" />
+
+
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--This one seems to work all the time, but really small on ipad-->
+<!--<meta name="viewport" content="initial-scale=0.4">-->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="stylesheet" media="all" href="theme/css/default.css" />
+<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css" />
+<link rel="stylesheet" media="all" href="theme/css/small-icon.css" />
+<base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+<script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+
+   <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script>
+
+<script src="js/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML,local/local" type="text/javascript"></script>
+</head>
+<body style="opacity: 0">
+<slides class="layout-widescreen">
+<slide class="title-slide segue nobackground">
+       <aside class="gdbar"><img src="images/golang-image1.png"></aside>
+       <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+       <hgroup class="auto-fadein">
+         <h1 data-config-title><!-- populated from slide_config.json --></h1>
+         <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+         <p data-config-presenter><!-- populated from slide_config.json --></p>
+       </hgroup>
+    </slide>
+  
+<slide id="sec-1" class="fill white nobackground" style="background-image: url(images/goldengate-containers.jpg)">
+<hgroup class="">
+       <h2 class="white ">Docker 🐳 en un mot (et démo)</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-1">
+
+<blockquote>
+<p>
+Build, Ship, Run
+An open platform for distributed applications for developers and
+sysadmins.
+</p>
+
+<p>
+<span class='float-right'>&#x2013; docker.com</span><br  />
+</p>
+</blockquote>
+
+<ul>
+<li>Isolation → Conteneur (<i>machine virtuelle</i> light 😈)
+</li>
+<li>Repetabilité → Une image est immutable
+</li>
+<li>Scalabilité → Une image, X conteneur
+</li>
+<li>Standardisation → API standard et partagée (engine, swarm, compose, …)
+</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-2"  >
+<hgroup class="">
+       <h2 class=" ">Volumes</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-2">
+<ul>
+<li>Pourquoi ?
+<ul>
+<li>Performance
+</li>
+<li>Partage de données entre host et conteneur
+</li>
+<li>Partage de données entre conteneur
+</li>
+</ul>
+</li>
+<li>Usage
+<ul>
+<li>Base de données
+</li>
+<li>Configurations
+</li>
+<li>Logs, sauvegardes, …
+</li>
+</ul>
+</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-3"  >
+<hgroup class="">
+       <h2 class=" ">Volumes plugins</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-3">
+<p>
+Étendre les fonctionnalités de Docker (et ici des volumes) en donnant
+la possibilité de le faire par des plugins.
+</p>
+
+<ul>
+<li>Créer des volumes qui…
+<ul>
+<li>persistent sur plusieurs <i>engine</i>
+</li>
+<li>se backup de manière asynchrone
+</li>
+<li>s'appuie sur une base clé/valeur (configuration)
+</li>
+<li>s'appuie sur un système de fichier distribué
+</li>
+<li>font n'importe quoi, pour le fun :D
+</li>
+</ul>
+</li>
+<li>Comment ?
+<ul>
+<li><code>.sock</code> (unix socket), <code>.spec</code> (url), <code>.json</code> (plugin spec.)
+</li>
+<li>API HTTP
+</li>
+<li>TCP ou unix socket
+</li>
+</ul>
+</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-4"  >
+<hgroup class="">
+       <h2 class=" ">Volume plugins API (1/4)</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-4">
+<ul>
+<li>Handshake API
+<ul>
+<li><code>/Plugin.Activate</code>
+</li>
+</ul>
+</li>
+
+<li>Volume API
+<ul>
+<li><code>/VolumeDriver.Create</code>
+</li>
+<li><code>/VolumeDriver.Remove</code>
+</li>
+<li><code>/VolumeDriver.Mount</code>
+</li>
+<li><code>/VolumeDriver.Path</code>
+</li>
+<li><code>/VolumeDriver.Unmount</code>
+</li>
+<li><code>/VolumeDriver.Get</code>
+</li>
+<li><code>/VolumeDriver.List</code>
+</li>
+</ul>
+</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-5"  >
+<hgroup class="">
+       <h2 class=" "><code>/VolumeDriver.Create</code></h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-5">
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="json">
+{
+    "Name": "volume_name",
+    "Opts": {}
+}
+</pre>
+
+</div>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="json">
+{
+    "Err": ""
+}
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-6"  >
+<hgroup class="">
+       <h2 class=" "><code>/VolumeDriver.Remove</code></h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-6">
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="json">
+{
+    "Name": "volume_name"
+}
+</pre>
+
+</div>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="json">
+{
+    "Err": ""
+}
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-7"  >
+<hgroup class="">
+       <h2 class=" "><code>/VolumeDriver.Mount</code></h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-7">
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="json">
+{
+    "Name": "volume_name"
+}
+</pre>
+
+</div>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="json">
+{
+    "Mountpoint": "/path/to/directory/on/host",
+    "Err": ""
+}
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-8"  >
+<hgroup class="">
+       <h2 class=" "><code>/VolumeDriver.Path</code></h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-8">
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="json">
+{
+    "Name": "volume_name"
+}
+</pre>
+
+</div>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="json">
+{
+    "Mountpoint": "/path/to/directory/on/host",
+    "Err": ""
+}
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-9"  >
+<hgroup class="">
+       <h2 class=" "><code>/VolumeDriver.Unmount</code></h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-9">
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="json">
+{
+    "Name": "volume_name"
+}
+</pre>
+
+</div>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="json">
+{
+    "Err": ""
+}
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-10"  >
+<hgroup class="">
+       <h2 class=" "><code>/VolumeDriver.Get</code></h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-10">
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="json">
+{
+    "Name": "volume_name"
+}
+</pre>
+
+</div>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="json">
+{
+  "Volume": {
+    "Name": "volume_name",
+    "Mountpoint": "/path/to/directory/on/host",
+  },
+  "Err": ""
+}
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-11"  >
+<hgroup class="">
+       <h2 class=" "><code>/VolumeDriver.List</code></h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-11">
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="json">
+{
+    "Name": "volume_name"
+}
+</pre>
+
+</div>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="json">
+{
+  "Volumes": [
+    {
+      "Name": "volume_name",
+      "Mountpoint": "/path/to/directory/on/host"
+    }
+  ],
+  "Err": ""
+}
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+<slide class="backdrop"></slide>
+</slides> 
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body> 
+
+</html>

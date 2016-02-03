@@ -1,0 +1,198 @@
+#+TITLE: Volumes docker
+#+SUBTITLE: Nightclazz
+#+DATE: 2015/10/15
+#+AUTHOR: vdemeester
+#+EMAIL: vincent@sbr.pm
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:comment d:(not "LOGBOOK") date:t
+#+OPTIONS: e:t email:nil f:t inline:t num:nil p:nil pri:nil stat:t
+#+OPTIONS: tags:t tasks:t tex:t timestamp:t toc:nil todo:t |:t
+#+CREATOR: Emacs 24.4.1 (Org mode 8.2.10)
+#+DESCRIPTION:
+#+EXCLUDE_TAGS: noexport
+#+KEYWORDS:
+#+LANGUAGE: fr
+#+SELECT_TAGS: export
+
+#+COMPANY: Zenika
+#+WWW: http://www.zenika.com
+#+GITHUB: http://github.com/zenika
+#+TWITTER: ZenikaIT
+
+#+FAVICON: images/golang.ico
+#+ICON: images/golang-image1.png
+#+HASHTAG: #zenika #nightclazz #golang
+
+** Docker 🐳 en un mot (et démo)
+   :PROPERTIES:
+   :FILL:     images/goldengate-containers.jpg
+   :TITLE:    white
+   :SLIDE:    white
+   :END:
+
+#+BEGIN_QUOTE
+Build, Ship, Run
+An open platform for distributed applications for developers and
+sysadmins.
+
+    -- docker.com
+#+END_QUOTE
+
+- Isolation → Conteneur (/machine virtuelle/ light 😈)
+- Repetabilité → Une image est immutable
+- Scalabilité → Une image, X conteneur
+- Standardisation → API standard et partagée (engine, swarm, compose, …)
+
+** Volumes
+
+- Pourquoi ?
+  - Performance
+  - Partage de données entre host et conteneur
+  - Partage de données entre conteneur
+- Usage
+  - Base de données
+  - Configurations
+  - Logs, sauvegardes, …
+
+
+** Volumes plugins
+
+Étendre les fonctionnalités de Docker (et ici des volumes) en donnant
+la possibilité de le faire par des plugins.
+
+- Créer des volumes qui…
+  - persistent sur plusieurs /engine/
+  - se backup de manière asynchrone
+  - s'appuie sur une base clé/valeur (configuration)
+  - s'appuie sur un système de fichier distribué
+  - font n'importe quoi, pour le fun :D
+- Comment ?
+  - =.sock= (unix socket), =.spec= (url), =.json= (plugin spec.)
+  - API HTTP
+  - TCP ou unix socket
+
+
+** Volume plugins API
+
+- Handshake API
+  - =/Plugin.Activate=
+
+- Volume API
+  - =/VolumeDriver.Create=
+  - =/VolumeDriver.Remove=
+  - =/VolumeDriver.Mount=
+  - =/VolumeDriver.Path=
+  - =/VolumeDriver.Unmount=
+  - =/VolumeDriver.Get=
+  - =/VolumeDriver.List=
+
+** =/VolumeDriver.Create=
+
+#+BEGIN_SRC json
+{
+    "Name": "volume_name",
+    "Opts": {}
+}
+#+END_SRC
+
+#+BEGIN_SRC json
+{
+    "Err": ""
+}
+#+END_SRC
+
+** =/VolumeDriver.Remove=
+
+#+BEGIN_SRC json
+{
+    "Name": "volume_name"
+}
+#+END_SRC
+
+#+BEGIN_SRC json
+{
+    "Err": ""
+}
+#+END_SRC
+
+** =/VolumeDriver.Mount=
+
+#+BEGIN_SRC json
+{
+    "Name": "volume_name"
+}
+#+END_SRC
+
+#+BEGIN_SRC json
+{
+    "Mountpoint": "/path/to/directory/on/host",
+    "Err": ""
+}
+#+END_SRC
+
+** =/VolumeDriver.Path=
+
+#+BEGIN_SRC json
+{
+    "Name": "volume_name"
+}
+#+END_SRC
+
+#+BEGIN_SRC json
+{
+    "Mountpoint": "/path/to/directory/on/host",
+    "Err": ""
+}
+#+END_SRC
+
+** =/VolumeDriver.Unmount=
+
+#+BEGIN_SRC json
+{
+    "Name": "volume_name"
+}
+#+END_SRC
+
+#+BEGIN_SRC json
+{
+    "Err": ""
+}
+#+END_SRC
+
+** =/VolumeDriver.Get=
+
+#+BEGIN_SRC json
+{
+    "Name": "volume_name"
+}
+#+END_SRC
+
+#+BEGIN_SRC json
+{
+  "Volume": {
+    "Name": "volume_name",
+    "Mountpoint": "/path/to/directory/on/host",
+  },
+  "Err": ""
+}
+#+END_SRC
+
+** =/VolumeDriver.List=
+
+#+BEGIN_SRC json
+{
+    "Name": "volume_name"
+}
+#+END_SRC
+
+#+BEGIN_SRC json
+{
+  "Volumes": [
+    {
+      "Name": "volume_name",
+      "Mountpoint": "/path/to/directory/on/host"
+    }
+  ],
+  "Err": ""
+}
+#+END_SRC
