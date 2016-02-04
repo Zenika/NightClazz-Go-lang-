@@ -88,12 +88,16 @@ la possibilité de le faire par des plugins.
 
 ** =/VolumeDriver.Create=
 
+- Request
+
 #+BEGIN_SRC json
 {
     "Name": "volume_name",
     "Opts": {}
 }
 #+END_SRC
+
+- Response
 
 #+BEGIN_SRC json
 {
@@ -103,11 +107,15 @@ la possibilité de le faire par des plugins.
 
 ** =/VolumeDriver.Remove=
 
+- Request
+
 #+BEGIN_SRC json
 {
     "Name": "volume_name"
 }
 #+END_SRC
+
+- Response
 
 #+BEGIN_SRC json
 {
@@ -117,11 +125,15 @@ la possibilité de le faire par des plugins.
 
 ** =/VolumeDriver.Mount=
 
+- Request
+
 #+BEGIN_SRC json
 {
     "Name": "volume_name"
 }
 #+END_SRC
+
+- Response
 
 #+BEGIN_SRC json
 {
@@ -132,11 +144,15 @@ la possibilité de le faire par des plugins.
 
 ** =/VolumeDriver.Path=
 
+- Request
+
 #+BEGIN_SRC json
 {
     "Name": "volume_name"
 }
 #+END_SRC
+
+- Response
 
 #+BEGIN_SRC json
 {
@@ -147,11 +163,15 @@ la possibilité de le faire par des plugins.
 
 ** =/VolumeDriver.Unmount=
 
+- Request
+
 #+BEGIN_SRC json
 {
     "Name": "volume_name"
 }
 #+END_SRC
+
+- Response
 
 #+BEGIN_SRC json
 {
@@ -161,11 +181,15 @@ la possibilité de le faire par des plugins.
 
 ** =/VolumeDriver.Get=
 
+- Request
+
 #+BEGIN_SRC json
 {
     "Name": "volume_name"
 }
 #+END_SRC
+
+- Response
 
 #+BEGIN_SRC json
 {
@@ -179,11 +203,15 @@ la possibilité de le faire par des plugins.
 
 ** =/VolumeDriver.List=
 
+- Request
+
 #+BEGIN_SRC json
 {
     "Name": "volume_name"
 }
 #+END_SRC
+
+- Response
 
 #+BEGIN_SRC json
 {
@@ -196,6 +224,7 @@ la possibilité de le faire par des plugins.
   "Err": ""
 }
 #+END_SRC
+
 ** Implementation 😎
 
 Pour se simplifier la vie, nous allons utiliser
