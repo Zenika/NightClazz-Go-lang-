@@ -2,7 +2,7 @@
 <html>
 <head>
 <title></title>
-<!-- 2016-02-03 Wed 23:58 -->
+<!-- 2016-02-04 Thu 09:21 -->
 <meta  charset="utf-8" />
 <meta  htto-equiv="X-UA-Compatible" content="chrome=1" />
 <meta  name="generator" content="Org-mode with org-ioslide" />
@@ -155,7 +155,7 @@ la possibilité de le faire par des plugins.
 </slide>
 <slide id="sec-4"  >
 <hgroup class="">
-       <h2 class=" ">Volume plugins API (1/4)</h2>
+       <h2 class=" ">Volume plugins API</h2>
        <h3></h3>
        </hgroup>
 <article class="" id="text-4">
@@ -419,6 +419,39 @@ la possibilité de le faire par des plugins.
     }
   ],
   "Err": ""
+}
+</pre>
+
+</div>
+
+
+</article>
+
+</slide>
+</slide>
+<slide id="sec-12"  >
+<hgroup class="">
+       <h2 class=" ">Implementation 😎</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-12">
+<p>
+Pour se simplifier la vie, nous allons utiliser
+[docker/go-plugins-helpers](<a href="https://github.com/docker/go-plugins-helpers">https://github.com/docker/go-plugins-helpers</a>).
+</p>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="go">
+// Driver represent the interface a driver must fulfill.
+type Driver interface {
+        Create(Request) Response
+        List(Request) Response
+        Get(Request) Response
+        Remove(Request) Response
+        Path(Request) Response
+        Mount(Request) Response
+        Unmount(Request) Response
 }
 </pre>
 

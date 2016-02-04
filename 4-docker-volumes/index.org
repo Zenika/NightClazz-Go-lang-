@@ -196,3 +196,20 @@ la possibilité de le faire par des plugins.
   "Err": ""
 }
 #+END_SRC
+** Implementation 😎
+
+Pour se simplifier la vie, nous allons utiliser
+[docker/go-plugins-helpers](https://github.com/docker/go-plugins-helpers).
+
+#+BEGIN_SRC go
+// Driver represent the interface a driver must fulfill.
+type Driver interface {
+	Create(Request) Response
+	List(Request) Response
+	Get(Request) Response
+	Remove(Request) Response
+	Path(Request) Response
+	Mount(Request) Response
+	Unmount(Request) Response
+}
+#+END_SRC
